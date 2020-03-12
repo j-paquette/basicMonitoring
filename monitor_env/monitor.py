@@ -1,8 +1,8 @@
 import os
-import smtp
+import smtplib
 import requests 
 # linode is where he set his environment variable called LinodeClient, and the specific instance 
-from linode_api4 import LinodeClient, Instance
+# from linode_api4 import LinodeClient, Instance
 
 # how to get environment variables
 # how to set environment variables in Windows 10 here: https://www.onmsft.com/how-to/how-to-set-an-environment-variable-in-windows-10
@@ -15,16 +15,16 @@ LINODE_TOKEN = os.environ.get('LINODE_TOKEN')
 
 def notify_user():
 	# use a mail server. need to know how to connect to the mail server. find out what the port is
-	with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
+	with smtplib.SMTP('localhost', 2525) as smtp:
 	# ehlo method identifies ourselves with the server we're using
 		smtp.ehlo()
 		# encrypt our traffic
-		smtp.starttls()
+		# smtp.starttls()
 		# re-identify ourselves
-		smtp.ehlo()
+		# smtp.ehlo()
 		
 		# put login info in a config file/environment variables
-		smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+		# smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
 		
 		subject = 'URL ERROR'
 		body = 'URL has either a client error(4xx status code) or server error(5xx status code)'
@@ -35,13 +35,14 @@ def notify_user():
 		
 def reboot_server():
 	# keep this code if we want to reboot the server whenever the server goes down	
-	client = LinodeClient(LINODE_TOKEN)
+	# client = LinodeClient(LINODE_TOKEN)
 
 	# replace the number with the actual ID of the server
-	my_server = client.load(Instance, 376715)
+	# my_server = client.load(Instance, 376715)
+	print ('rebooting')
 
 	# reboot the server
-	my_server.reboot()
+	# my_server.reboot()
 	
 # this 	will catch any other type of problem(ie, Apache stopping or some other service)
 try:
@@ -59,7 +60,7 @@ except Exception as e:
 	
 # Remove once you've got the server name & ID.  
 # to print the server name: server ID	
-def print_servername_and_id():
+# def print_servername_and_id():
 	# for Linode in client.linode.instances():
 	#	print(f'{linode.label}: {linode.id}')
 	
